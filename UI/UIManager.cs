@@ -122,6 +122,18 @@ namespace UIFrameWork
 
         }
 
+        public void CloseAll()
+        {
+            foreach(string name in showUIs.Keys)
+            {
+                CloseUI(name);
+            }
+            staUIs.Peek().ActiveFalse();
+            showUIs.Clear();
+            ClearStack();
+        }
+
+
 
         #region 内部测试
 
