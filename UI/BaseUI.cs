@@ -35,7 +35,7 @@ namespace UIFrameWork
         #region 封装子类常用方法
         protected void OpenUI(string UIName)
         {
-            UIManager.instance.showUI(UIName);
+            UIManager.instance.ShowUI(UIName);
         }
 
         protected void CloseUI()
@@ -44,6 +44,17 @@ namespace UIFrameWork
             UIName = GetType().ToString();
             Debug.Log($"GetTypeName: {UIName}");
             UIManager.instance.CloseUI(UIName);
+        }
+
+        protected void OpenPop(UIManager.PopConfirm popConfirm)
+        {
+            UIManager.instance.ShowUI(UIManager.PopUpMenuKey);
+            UIManager.instance.YesConfirm = popConfirm;
+        }
+
+        protected void ConfirmYesPop()
+        {
+            UIManager.instance.YesConfirm();
         }
 
         /// <summary>

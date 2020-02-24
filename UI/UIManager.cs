@@ -37,6 +37,13 @@ namespace UIFrameWork
 
         Dictionary<string, string> UIPath = new Dictionary<string, string>();
 
+        //一些常量
+        public const string PopUpMenuKey = "PopUpUI";
+
+        //委托
+        public delegate void PopConfirm();
+        public PopConfirm YesConfirm;
+
         public void Awake()
         {
             instance = this;
@@ -56,11 +63,13 @@ namespace UIFrameWork
             UIPath?.Add("SaveUI", "UIPrefabs/SaveMenu");
             UIPath?.Add("SoundUI", "UIPrefabs/SoundMenu");
 
+            UIPath?.Add(PopUpMenuKey, "UIPrefabs/PopMenu");
+
             MyUITest();
         }
 
 
-        public bool showUI(string UIName)
+        public bool ShowUI(string UIName)
         {
             
             BaseUI baseUI = null;
@@ -147,7 +156,7 @@ namespace UIFrameWork
 
         void MyUITest()
         {
-            UIManager.instance.showUI("MainUI");
+            UIManager.instance.ShowUI("MainUI");
         }
 
         /// <summary>
