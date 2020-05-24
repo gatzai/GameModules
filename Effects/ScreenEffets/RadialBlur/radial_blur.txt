@@ -1,0 +1,22 @@
+vec2 blurCenter = vec2(0.5,0.5);
+float SAMPLE_COUNT = 10.;
+float radius = .4;
+
+void mainImage( out vec4 fragColor, in vec2 fragCoord )
+{
+    vec2 uv = fragCoord/iResolution.xy;
+	vec4 col = texture(iChannel0, uv - .1);
+    vec2 dir = uv - blurCenter;
+    dir *= smoothstep(.0,radius, length(dir));  //模糊半径
+    
+    vec4 temp;
+    for(float i=0.; i<SAMPLE_COUNT; ++i)
+    {
+        vec2 luv = uv + dir * i * .01;
+		temp += texture(iChannel0, luv);
+    }
+    temp /= SAMPLE_COUNT;
+    
+
+    fragColor = temp;
+}
