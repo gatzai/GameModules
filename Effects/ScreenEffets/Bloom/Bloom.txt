@@ -1,0 +1,34 @@
+/*
+实现时间：2020/5/25
+参考：https://blog.csdn.net/poem_qianmo/article/details/51871531
+使用方法：高斯模糊
+大概步骤：提取高亮部分，模糊此部分，将结果与原图融合
+优化或创新：无
+后期方向：当前效果不理想
+*/
+void mainImage( out vec4 fragColor, in vec2 fragCoord )
+{
+    // Normalized pixel coordinates (from 0 to 1)
+    vec2 uv = fragCoord/iResolution.xy;
+    vec2 offset = vec2(.01,-.01);
+    vec2 uv20 = uv + offset.xy * vec2(.5,.5);
+    vec2 uv21 = uv + offset.xy * vec2(-.5,-.5);
+    vec2 uv22 = uv + offset.xy * vec2(.5, -.5);
+    vec2 uv23 = uv + offset.xy * vec2(-.5, .5);
+
+    vec4 img= texture(iChannel0, uv);
+    
+    vec4 col = vec4(0.);
+    col += texture(iChannel0, uv20);
+    col += texture(iChannel0, uv21);
+    col += texture(iChannel0, uv22);
+    col += texture(iChannel0, uv23);
+    col /= 3.;
+
+    float bright = (col.r + col.g + col.b)/3.;
+    float bloom = 0.;
+    if(bright > .5)bloom = col.r;
+    
+    // Output to screen
+    fragColor = mix(img,col,bloom);
+}
