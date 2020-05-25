@@ -1,3 +1,9 @@
+/*
+实现时间：2020/5/24
+参考：https://blog.csdn.net/puppet_master/article/details/54566397
+优化或创新：无
+后期方向：在unity中进行降分辨率操作
+*/
 vec2 blurCenter = vec2(0.5,0.5);
 float SAMPLE_COUNT = 10.;
 float radius = .4;
