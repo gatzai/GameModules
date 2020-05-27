@@ -1,0 +1,39 @@
+/*
+实现时间：2020/5/26
+参考：https://www.shadertoy.com/view/MtlSWj
+使用方法：高斯模糊
+大概步骤：模糊方法还是texture偏移,算子是高斯分布
+优化或创新：无
+后期方向：当前效率太低，只有45帧左右
+*/
+const int halfSamplexy = 7;
+float Gaussian (float sigma, float x)
+{
+    return exp(-(x*x) / (2.0 * sigma*sigma));
+}
+
+void mainImage( out vec4 fragColor, in vec2 fragCoord )
+{
+    // Normalized pixel coordinates (from 0 to 1)
+    vec2 uv = fragCoord/iResolution.xy;
+	vec3 col = vec3(0.);
+    float sigma = 5.;
+    float total = 0.;
+    
+    for(int i=-halfSamplexy; i<=halfSamplexy; ++i)
+    {
+        float fy = Gaussian(sigma,float(i- halfSamplexy));
+        float offsety = float(i-halfSamplexy) * 1./512.;
+        
+        for(int j=-halfSamplexy; j<=halfSamplexy; ++j)
+        {
+    	    float fx = Gaussian(sigma,float(j- halfSamplexy));
+			float offsetx = float(j-halfSamplexy) * 1./512.;
+            total += fx * fy;
+            col.rgb += texture(iChannel0, uv + vec2(offsetx, offsety)).rgb * fx * fy;
+        }
+    }
+    col /= total;
+	
+    fragColor = vec4(col.rgb,1.);
+}
