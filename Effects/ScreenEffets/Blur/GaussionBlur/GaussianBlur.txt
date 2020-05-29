@@ -1,10 +1,11 @@
 /*
 实现时间：2020/5/26
 参考：https://www.shadertoy.com/view/MtlSWj
-使用方法：高斯模糊
+简介：高斯模糊
+优缺点：模糊效果好，当前效率太低，只有45帧左右
 大概步骤：模糊方法还是texture偏移,算子是高斯分布
-优化或创新：无
-后期方向：当前效率太低，只有45帧左右
+后期方向：需要提高效率
+说明：使用textureLod会比使用texture效率高，此例中优化程度为45->60帧
 */
 const int halfSamplexy = 7;
 float Gaussian (float sigma, float x)

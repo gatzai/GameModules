@@ -1,0 +1,31 @@
+/*
+实现时间：2020/5/29
+参考：https://www.shadertoy.com/view/4lXXWn
+简介：快速模糊
+优缺点：效率高，但是噪点多
+大概步骤：uv坐标随机偏移
+后期方向：降低噪点
+*/
+const float bluramount = .08;
+const float repeats = 60.;
+
+float rand(vec2 co){
+    return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+}
+
+void mainImage( out vec4 fragColor, in vec2 fragCoord )
+{
+    vec2 uv = fragCoord/iResolution.xy;
+    vec3 col = vec3(0.);
+
+    for(float i=0.; i<repeats; ++i)
+    {
+        vec2 q = vec2(cos(degrees((i/repeats)*360.)),sin(degrees((i/repeats)*360.)))
+            *(rand(vec2(i,uv.x+uv.y))+bluramount); 
+        vec2 uv2 = uv+(q*bluramount);
+        col += texture(iChannel0, uv2).rgb;
+    }
+    col /= repeats;
+    
+    fragColor = vec4(col,1.0);
+}
